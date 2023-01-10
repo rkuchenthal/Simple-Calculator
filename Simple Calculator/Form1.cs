@@ -37,7 +37,7 @@ namespace Simple_Calculator
             {                
                 resultBox.Text += button.Text;
                 //postfix = resultBox + button.Text;
-                AddToArray("0.");
+                AddToArray("0.", 0);
                 decimalExists = true;                                            
             }
             //remove leading for non decimal numbers
@@ -46,14 +46,14 @@ namespace Simple_Calculator
                 //turn existing zero into new number
                 resultBox.Text = button.Text;
                 //postfix = button.Text;
-                AddToArray(button.Text);
+                AddToArray(button.Text, 0);
             }
             //all btn numbers that arent a decimal
             else if (!button.Text.Equals("."))
             {
                 resultBox.Text += button.Text;
                 //postfix += button.Text;
-                AddToArray(button.Text);
+                AddToArray(button.Text, 0);
             }
             else
             {
@@ -62,7 +62,7 @@ namespace Simple_Calculator
                 {
                     resultBox.Text += button.Text;
                     //postfix += button.Text;
-                    AddToArray(button.Text);
+                    AddToArray(button.Text,0);
                     decimalExists = true;
                 }
                 else if (resultBox.Text.Contains("."))
@@ -78,12 +78,12 @@ namespace Simple_Calculator
                         {
                             resultBox.Text += "0" + button.Text;
                             //postfix += "0" + button.Text;
-                            AddToArray("0" + button.Text);
+                            AddToArray("0" + button.Text,0);
                         }
                         else
                         {
                             resultBox.Text += button.Text;
-                            AddToArray(button.Text);
+                            AddToArray(button.Text,0);
                         }
 
                         decimalExists = true;
@@ -101,9 +101,8 @@ namespace Simple_Calculator
 
             resultBox.Text += " " + button.Text + " ";
 
-            inVar++;
-            AddToArray(button.Text);
-            inVar++;
+            //inVar++;
+            AddToArray(button.Text,1);            
             
             decimalExists = false;
 
@@ -221,9 +220,26 @@ namespace Simple_Calculator
             }
         }
 
-        private void AddToArray(string s)
+        private void AddToArray(string newVal, int opFlag)
         {
-            inFixArList.Add(s);
+            if(inFixArList.Count > 0 && opFlag != 1)
+            {
+                string oldVal = (string)inFixArList[inVar];
+                inFixArList.Insert(inVar, (oldVal + newVal)); //replace old value using Insert() with old + new values
+            }
+            else if(inFixArList.Count > 0 && opFlag == 1)
+            {
+                //add new element to list for the operator
+                inFixArList.Add(newVal);
+                inVar++; //inc +1 for the prior number element being completed
+                inVar++; //inc +1 for the new operator being completed
+                inFixArList.Add(""); //add new blank element for the next number entry to append to
+            }
+            else
+            {
+                inFixArList.Add(newVal);
+            }
+            
         }
 
         private void btnClear_Click(object sender, EventArgs e)
@@ -241,4 +257,5 @@ namespace Simple_Calculator
 
 
 
-//switch from arrays to lists or something, so we dont need to use counters in loops and stuff
+//after switch to arraylists things stopped working. also need to
+// adjust the counter to work with double digit numbers
