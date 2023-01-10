@@ -113,29 +113,29 @@ namespace Simple_Calculator
             //translate to postfix            
             for (int i = 0; i <= inVar; i++)
             {
-                string op = (string)inFixArList[i];
-                int prio = PriorityOperators(op);
+                string element = (string)inFixArList[i];
+                int prio = PriorityOperators(element);
 
                 if (prio == 0)
                 {//for all numbers
-                    postFixArList.Add(op);
+                    postFixArList.Add(element);
                     postVar++;
                 }              
-                else if (op.Equals("*"))
+                else if (element.Equals("*"))
                 {
-                    PriorityStack(op, prio);
+                    PriorityStack(element, prio);
                 }
-                else if (op.Equals("/"))
+                else if (element.Equals("/"))
                 {
-                    PriorityStack(op, prio);
+                    PriorityStack(element, prio);
                 }
-                else if (op.Equals("+"))
+                else if (element.Equals("+"))
                 {
-                    PriorityStack(op, prio);
+                    PriorityStack(element, prio);
                 }
-                else if (op.Equals("-"))
+                else if (element.Equals("-"))
                 {
-                    PriorityStack(op, prio);
+                    PriorityStack(element, prio);
                 }
                 
             }
@@ -188,7 +188,13 @@ namespace Simple_Calculator
             }
             //the final answer = final pop()
             resultBox.Text = variables.Pop().ToString();
-            
+            //clear all lists so we can continue on with answer if we choose
+            inFixArList.Clear();
+            inFixArList.Add(resultBox.Text);
+
+            postFixArList.Clear();
+            postVar = 0;
+
         }
 
         private int PriorityOperators(string n)
