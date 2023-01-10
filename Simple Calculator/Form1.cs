@@ -186,14 +186,18 @@ namespace Simple_Calculator
 
                 
             }
-            //the final answer = final pop()
+            //the FINAL ANSWER = final pop()
             resultBox.Text = variables.Pop().ToString();
+
             //clear all lists so we can continue on with answer if we choose
             inFixArList.Clear();
-            AddToArray(resultBox.Text, 0);
             inVar = 0;
             postFixArList.Clear();
             postVar = 0;
+
+            //add answer to infix array
+            AddToArray(resultBox.Text, 0);
+            
 
         }
 
