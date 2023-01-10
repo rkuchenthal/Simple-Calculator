@@ -140,7 +140,7 @@ namespace Simple_Calculator
                 
             }
             //now combine the stack into array
-            for(int i = 1; i<= variables.Count; i++)
+            for(int i = 0; i<= variables.Count; i++)
             {
                 postFixArList.Add(variables.Pop());
                 postVar++;
@@ -268,5 +268,5 @@ namespace Simple_Calculator
 
 
 
-//add functionality to equals button for additional equations
-// adjust the counter to work with double digit numbers
+//TODO
+// make 3+ variable equations to work
