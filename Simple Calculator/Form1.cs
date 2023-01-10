@@ -224,8 +224,9 @@ namespace Simple_Calculator
         {
             if(inFixArList.Count > 0 && opFlag != 1)
             {
-                string oldVal = (string)inFixArList[inVar];
-                inFixArList.Insert(inVar, (oldVal + newVal)); //replace old value using Insert() with old + new values
+                string oldVal = (string)inFixArList[inVar]; //grab current value in the last element
+                inFixArList[inVar] = oldVal + newVal; //replace old value with old + new value
+                
             }
             else if(inFixArList.Count > 0 && opFlag == 1)
             {
@@ -257,5 +258,5 @@ namespace Simple_Calculator
 
 
 
-//after switch to arraylists things stopped working. also need to
+//add functionality to equals button for additional equations
 // adjust the counter to work with double digit numbers
