@@ -16,5 +16,6 @@ namespace Simple_Calculator
         {
             InitializeComponent();
         }
+
     }
 }
