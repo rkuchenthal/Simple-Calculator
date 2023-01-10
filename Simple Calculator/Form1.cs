@@ -17,5 +17,15 @@ namespace Simple_Calculator
             InitializeComponent();
         }
 
+        private void click_btn(object sender, EventArgs e)
+        {
+            if(resultBox.Text == "0")
+            {
+                resultBox.Clear();
+            }
+            //puts sender object into a button so we use the button text to add values to result textbox
+            Button button = (Button)sender;
+            resultBox.Text = resultBox.Text + button.Text;
+        }
     }
 }
