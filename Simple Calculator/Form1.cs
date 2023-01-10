@@ -167,7 +167,7 @@ namespace Simple_Calculator
                     case "-":
                         sa = variables.Pop();
                         sb = variables.Pop();
-                        variables.Push(Convert.ToString(Convert.ToDouble(sa) - Convert.ToDouble(sb)));
+                        variables.Push(Convert.ToString(Convert.ToDouble(sb) - Convert.ToDouble(sa)));
                         break;
                     case "*":
                         sa = variables.Pop();
