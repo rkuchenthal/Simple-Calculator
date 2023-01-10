@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +13,13 @@ namespace Simple_Calculator
 {
     public partial class Form1 : Form
     {
-        Double resultValue = 0;
-        string operatorClicked;
-        bool isOperatorCLicked = false;
+        Stack<string> variables = new Stack<string>();
+        ArrayList inFixArList = new ArrayList();
+        ArrayList postFixArList = new ArrayList();
+        bool decimalExists = false;
+        //string postfix = "";
+        int inVar = 0, postVar = 0;
+        
 
         public Form1()
         {
@@ -26,72 +31,214 @@ namespace Simple_Calculator
             //puts sender object into a button so we can use the button text 
             Button button = (Button)sender;
 
-            
-            //preventing the 0 from being deleted when making decimals <1
-            if (resultBox.Text.Equals("0") && button.Text.Equals("."))
-            {
-                //making sure there already is not a decimal point
-                if (!resultBox.Text.Contains("."))
-                {
-                    resultBox.Text += button.Text;
-                }                
-                
+            //preventing the 0 from being deleted when making decimals < 1 as the first number
+            // and making sure there already is not a decimal point in that number
+            if (resultBox.Text.Equals("0") && button.Text.Equals(".") && !resultBox.Text.Contains("."))
+            {                
+                resultBox.Text += button.Text;
+                //postfix = resultBox + button.Text;
+                AddToArray("0.");
+                decimalExists = true;                                            
             }
-            //remove initial zero in resultBox
+            //remove leading for non decimal numbers
             else if (resultBox.Text == "0")
             {
                 //turn existing zero into new number
                 resultBox.Text = button.Text;
+                //postfix = button.Text;
+                AddToArray(button.Text);
+            }
+            //all btn numbers that arent a decimal
+            else if (!button.Text.Equals("."))
+            {
+                resultBox.Text += button.Text;
+                //postfix += button.Text;
+                AddToArray(button.Text);
             }
             else
             {
-                //making sure your not adding 2nd decimal to same number
+                //making sure your not adding 2nd decimal to currrent number
                 if (button.Text.Equals(".") && !resultBox.Text.Contains("."))
                 {
                     resultBox.Text += button.Text;
+                    //postfix += button.Text;
+                    AddToArray(button.Text);
+                    decimalExists = true;
                 }
-                //all btn numbers that arent a decimal
-                else if (!button.Text.Equals("."))
+                else if (resultBox.Text.Contains("."))
                 {
-                    resultBox.Text += button.Text;
+                    string infix = resultBox.Text;                    
+                    int s = infix.LastIndexOf(" ");
+
+                    //checks the decimalExists flag, if false the
+                    //current number doesnt have one yet.
+                    if (!decimalExists)
+                    {
+                        if(s == infix.Length - 1)
+                        {
+                            resultBox.Text += "0" + button.Text;
+                            //postfix += "0" + button.Text;
+                            AddToArray("0" + button.Text);
+                        }
+                        else
+                        {
+                            resultBox.Text += button.Text;
+                            AddToArray(button.Text);
+                        }
+
+                        decimalExists = true;
+
+                    }
+                    
                 }
-                
-            }
-
-            
-
+            }               
+                                                                
         }
 
         private void operator_click(object sender, EventArgs e)
         {
             Button button = (Button)sender;
-            operatorClicked = button.Text;
-            resultValue = Convert.ToDouble(resultBox.Text);
+
+            resultBox.Text += " " + button.Text + " ";
+
+            inVar++;
+            AddToArray(button.Text);
+            inVar++;
+            
+            decimalExists = false;
+
+        }
+
+        private void PostfixConv()
+        {
+            //translate to postfix            
+            for (int i = 0; i <= inVar; i++)
+            {
+                string op = (string)inFixArList[i];
+                int prio = PriorityOperators(op);
+
+                if (prio == 0)
+                {//for all numbers
+                    postFixArList.Add(op);
+                    postVar++;
+                }              
+                else if (op.Equals("*"))
+                {
+                    PriorityStack(op, prio);
+                }
+                else if (op.Equals("/"))
+                {
+                    PriorityStack(op, prio);
+                }
+                else if (op.Equals("+"))
+                {
+                    PriorityStack(op, prio);
+                }
+                else if (op.Equals("-"))
+                {
+                    PriorityStack(op, prio);
+                }
+                
+            }
+            //now combine the stack into array
+            for(int i = 1; i<= variables.Count; i++)
+            {
+                postFixArList.Add(variables.Pop());
+                postVar++;
+            }
+        }
+        
+        private void btnEquals_Click(object sender, EventArgs e)
+        {
+            //convert equation to postfix
+            PostfixConv();
+
+            //solve postfix equation
+            string sa, sb;
+            for (int i = 0; i < postVar; i++)
+            {
+                string operand = (string)postFixArList[i];
+                switch (operand)
+                {
+                    case"+":
+                        sa = variables.Pop();
+                        sb = variables.Pop();
+                        variables.Push(Convert.ToString(Convert.ToDouble(sa) + Convert.ToDouble(sb))); 
+                        break;
+                    case "-":
+                        sa = variables.Pop();
+                        sb = variables.Pop();
+                        variables.Push(Convert.ToString(Convert.ToDouble(sa) - Convert.ToDouble(sb)));
+                        break;
+                    case "*":
+                        sa = variables.Pop();
+                        sb = variables.Pop();
+                        variables.Push(Convert.ToString(Convert.ToDouble(sa) * Convert.ToDouble(sb)));
+                        break;
+                    case "/":
+                        sa = variables.Pop();
+                        sb = variables.Pop();
+                        variables.Push(Convert.ToString(Convert.ToDouble(sa) / Convert.ToDouble(sb)));
+                        break;
+                    default:
+                        variables.Push(operand);
+                        break;
+                }
+
+                
+            }
+            //the final answer = final pop()
+            resultBox.Text = variables.Pop().ToString();
+            
+        }
+
+        private int PriorityOperators(string n)
+        {
+            if(n.Equals("+") || n.Equals("-")) { return 1; }
+            else if (n.Equals("*") || n.Equals("/")) { return 2; }
+            else { return 0; }
+        }
+
+        private void PriorityStack(string op, int prio)
+        {
+            //if stack empty push operator onto it
+            if(variables.Count == 0)
+            {
+                variables.Push(op);
+            }
+            // if stack.peek() has lower precendence that op, we put op on stack
+            else if (prio > PriorityOperators(variables.Peek()))
+            {
+                variables.Push(op);
+            }
+            // if stack.peek() has higher prec, we pop it and add to postFixArList,
+            // then we throw orig values back into PriorityStack(og, prio)
+            else
+            {
+                postFixArList.Add(variables.Pop());
+                postVar++;
+                PriorityStack(op, prio);
+            }
+        }
+
+        private void AddToArray(string s)
+        {
+            inFixArList.Add(s);
         }
 
         private void btnClear_Click(object sender, EventArgs e)
         {
             resultBox.Text = "0";
-            resultValue = 0;
+            //clear all lists and counters
+            inFixArList.Clear();
+            postFixArList.Clear();
+            postVar= 0;
+            inVar= 0;
         }
-
-        private void btnEquals_Click(object sender, EventArgs e)
-        {
-            switch (operatorClicked)
-            {
-                case "+":
-                    resultBox.Text = (resultValue + Double.Parse(resultBox.Text)).ToString(); break;
-                case "-":
-                    resultBox.Text = (resultValue + Double.Parse(resultBox.Text)).ToString(); break;
-                case "*":
-                    resultBox.Text = (resultValue + Double.Parse(resultBox.Text)).ToString(); break;
-                case "/":
-                    resultBox.Text = (resultValue + Double.Parse(resultBox.Text)).ToString(); break;
-                default:
-                    break;
-            }
-        }
-
-        
     }
 }
+
+
+
+
+//switch from arrays to lists or something, so we dont need to use counters in loops and stuff
