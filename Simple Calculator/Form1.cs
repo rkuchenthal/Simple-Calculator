@@ -190,8 +190,8 @@ namespace Simple_Calculator
             resultBox.Text = variables.Pop().ToString();
             //clear all lists so we can continue on with answer if we choose
             inFixArList.Clear();
-            inFixArList.Add(resultBox.Text);
-
+            AddToArray(resultBox.Text, 0);
+            inVar = 0;
             postFixArList.Clear();
             postVar = 0;
 
