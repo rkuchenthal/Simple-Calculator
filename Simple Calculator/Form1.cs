@@ -14,23 +14,52 @@ namespace Simple_Calculator
     {
         Double resultValue = 0;
         string operatorClicked;
-
+        bool isOperatorCLicked = false;
 
         public Form1()
         {
             InitializeComponent();
         }
 
-        private void click_btn(object sender, EventArgs e)
+        private void click_btnNumber(object sender, EventArgs e)
         {
-            //remove initial zero in resultBox
-            if(resultBox.Text == "0")
-            {
-                resultBox.Clear();
-            }
-            //puts sender object into a button so we use the button text to add values to result textbox
+            //puts sender object into a button so we can use the button text 
             Button button = (Button)sender;
-            resultBox.Text = resultBox.Text + button.Text;
+
+            
+            //preventing the 0 from being deleted when making decimals <1
+            if (resultBox.Text.Equals("0") && button.Text.Equals("."))
+            {
+                //making sure there already is not a decimal point
+                if (!resultBox.Text.Contains("."))
+                {
+                    resultBox.Text += button.Text;
+                }                
+                
+            }
+            //remove initial zero in resultBox
+            else if (resultBox.Text == "0")
+            {
+                //turn existing zero into new number
+                resultBox.Text = button.Text;
+            }
+            else
+            {
+                //making sure your not adding 2nd decimal to same number
+                if (button.Text.Equals(".") && !resultBox.Text.Contains("."))
+                {
+                    resultBox.Text += button.Text;
+                }
+                //all btn numbers that arent a decimal
+                else if (!button.Text.Equals("."))
+                {
+                    resultBox.Text += button.Text;
+                }
+                
+            }
+
+            
+
         }
 
         private void operator_click(object sender, EventArgs e)
@@ -45,5 +74,24 @@ namespace Simple_Calculator
             resultBox.Text = "0";
             resultValue = 0;
         }
+
+        private void btnEquals_Click(object sender, EventArgs e)
+        {
+            switch (operatorClicked)
+            {
+                case "+":
+                    resultBox.Text = (resultValue + Double.Parse(resultBox.Text)).ToString(); break;
+                case "-":
+                    resultBox.Text = (resultValue + Double.Parse(resultBox.Text)).ToString(); break;
+                case "*":
+                    resultBox.Text = (resultValue + Double.Parse(resultBox.Text)).ToString(); break;
+                case "/":
+                    resultBox.Text = (resultValue + Double.Parse(resultBox.Text)).ToString(); break;
+                default:
+                    break;
+            }
+        }
+
+        
     }
 }
