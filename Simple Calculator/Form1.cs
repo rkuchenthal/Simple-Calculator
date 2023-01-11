@@ -294,6 +294,7 @@ namespace Simple_Calculator
 
 
 //TODO
+//fix continuing on once you have answer/make it so you cant add a number, only symbols direcctly after
 // add parenthesis
 //add more operands
 // add backspace button
