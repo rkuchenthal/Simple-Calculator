@@ -17,7 +17,7 @@ namespace Simple_Calculator
         ArrayList inFixArList = new ArrayList();
         ArrayList postFixArList = new ArrayList();
         bool decimalExists = false;
-        //string postfix = "";
+        string opChecklist = "+-*/";
         int inVar = 0, postVar = 0;
         
 
@@ -96,15 +96,22 @@ namespace Simple_Calculator
         }
 
         private void operator_click(object sender, EventArgs e)
-        {
+        { 
             Button button = (Button)sender;
 
-            resultBox.Text += " " + button.Text + " ";
-
-            //inVar++;
-            AddToArray(button.Text,1);            
             
-            decimalExists = false;
+            if (opChecklist.Contains(Convert.ToString(inFixArList[inVar])))
+            {
+
+            }
+            else
+            {
+                resultBox.Text += " " + button.Text + " ";
+
+                AddToArray(button.Text, 1);
+
+                decimalExists = false;
+            }          
 
         }
 
