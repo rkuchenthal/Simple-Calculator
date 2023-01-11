@@ -96,8 +96,11 @@ namespace Simple_Calculator
         private void operator_click(object sender, EventArgs e)
         { 
             Button button = (Button)sender;
-            
-            if (opChecklist.Contains(Convert.ToString(inFixArList[inVar])))
+            if(button.Text.Equals("(") || button.Text.Equals(")"))
+            {
+                //temporary blocker for parenthesis since i havent added code for them yet
+            }
+            else if (opChecklist.Contains(Convert.ToString(inFixArList[inVar])))
             {
                 //this if just makes sure the last element isnt a operand
                 //if it is it does nothing, to prevent back to back operands being entered

@@ -288,6 +288,7 @@
             this.btnRightPare.TabIndex = 22;
             this.btnRightPare.Text = ")";
             this.btnRightPare.UseVisualStyleBackColor = false;
+            this.btnRightPare.Click += new System.EventHandler(this.operator_click);
             // 
             // btnLeftPare
             // 
@@ -299,6 +300,7 @@
             this.btnLeftPare.TabIndex = 23;
             this.btnLeftPare.Text = "(";
             this.btnLeftPare.UseVisualStyleBackColor = false;
+            this.btnLeftPare.Click += new System.EventHandler(this.operator_click);
             // 
             // Form1
             // 
