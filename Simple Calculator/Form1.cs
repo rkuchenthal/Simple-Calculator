@@ -149,43 +149,51 @@ namespace Simple_Calculator
         
         private void btnEquals_Click(object sender, EventArgs e)
         {
-            //convert equation to postfix
-            PostfixConv();
-
-            //solve postfix equation
-            string sa, sb;
-            for (int i = 0; i < postVar; i++)
+            if(inFixArList.Count == 1)
             {
-                string operand = (string)postFixArList[i];
-                switch (operand)
-                {
-                    case"+":
-                        sa = variables.Pop();
-                        sb = variables.Pop();
-                        variables.Push(Convert.ToString(Convert.ToDouble(sa) + Convert.ToDouble(sb))); 
-                        break;
-                    case "-":
-                        sa = variables.Pop();
-                        sb = variables.Pop();
-                        variables.Push(Convert.ToString(Convert.ToDouble(sb) - Convert.ToDouble(sa)));
-                        break;
-                    case "*":
-                        sa = variables.Pop();
-                        sb = variables.Pop();
-                        variables.Push(Convert.ToString(Convert.ToDouble(sa) * Convert.ToDouble(sb)));
-                        break;
-                    case "/":
-                        sa = variables.Pop();
-                        sb = variables.Pop();
-                        variables.Push(Convert.ToString(Convert.ToDouble(sb) / Convert.ToDouble(sa)));
-                        break;
-                    default:
-                        variables.Push(operand);
-                        break;
-                }
-
-                
+                variables.Push(resultBox.Text);
             }
+            else
+            {
+                //convert equation to postfix
+                PostfixConv();
+
+                //solve postfix equation
+                string sa, sb;
+                for (int i = 0; i < postVar; i++)
+                {
+                    string operand = (string)postFixArList[i];
+                    switch (operand)
+                    {
+                        case "+":
+                            sa = variables.Pop();
+                            sb = variables.Pop();
+                            variables.Push(Convert.ToString(Convert.ToDouble(sa) + Convert.ToDouble(sb)));
+                            break;
+                        case "-":
+                            sa = variables.Pop();
+                            sb = variables.Pop();
+                            variables.Push(Convert.ToString(Convert.ToDouble(sb) - Convert.ToDouble(sa)));
+                            break;
+                        case "*":
+                            sa = variables.Pop();
+                            sb = variables.Pop();
+                            variables.Push(Convert.ToString(Convert.ToDouble(sa) * Convert.ToDouble(sb)));
+                            break;
+                        case "/":
+                            sa = variables.Pop();
+                            sb = variables.Pop();
+                            variables.Push(Convert.ToString(Convert.ToDouble(sb) / Convert.ToDouble(sa)));
+                            break;
+                        default:
+                            variables.Push(operand);
+                            break;
+                    }
+
+
+                }
+            }
+            
             //the FINAL ANSWER = final pop()
             // format it to only show 4 decimal places since we are working with small display area
             string ans = string.Format("{0:0.####}", Convert.ToDouble(variables.Pop().ToString()));
@@ -201,7 +209,6 @@ namespace Simple_Calculator
             //add answer to infix array
             AddToArray(resultBox.Text, 0);
             
-
         }
 
         private int PriorityOperators(string n)
