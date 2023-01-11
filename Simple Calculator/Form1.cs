@@ -187,7 +187,10 @@ namespace Simple_Calculator
                 
             }
             //the FINAL ANSWER = final pop()
-            resultBox.Text = variables.Pop().ToString();
+            // format it to only show 4 decimal places since we are working with small display area
+            string ans = string.Format("{0:0.####}", Convert.ToDouble(variables.Pop().ToString()));
+            //print to result box
+            resultBox.Text = ans; 
 
             //clear all lists so we can continue on with answer if we choose
             inFixArList.Clear();
@@ -269,4 +272,4 @@ namespace Simple_Calculator
 
 
 //TODO
-// make 3+ variable equations to work
+// trim the final answer to 4 decimal points 0.1234
