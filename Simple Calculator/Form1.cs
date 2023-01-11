@@ -215,7 +215,13 @@ namespace Simple_Calculator
                 postVar = 0;
 
                 //add answer to infix array
-                AddToArray(resultBox.Text, 0);
+                int decFlag =0 ;
+                if (ans.Contains("."))
+                {
+                    decFlag = 1;
+                }
+
+                AddToArray(resultBox.Text, decFlag);
             }                                  
         }
 
@@ -295,6 +301,8 @@ namespace Simple_Calculator
 
 //TODO
 //fix continuing on once you have answer/make it so you cant add a number, only symbols direcctly after
+// -if entering number need to reset resultBox to new number
+// -if entering operand need to add like normal
 // add parenthesis
 //add more operands
 // add backspace button
