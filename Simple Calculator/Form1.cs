@@ -88,8 +88,7 @@ namespace Simple_Calculator
 
                         decimalExists = true;
 
-                    }
-                    
+                    }                    
                 }
             }               
                                                                 
@@ -98,21 +97,23 @@ namespace Simple_Calculator
         private void operator_click(object sender, EventArgs e)
         { 
             Button button = (Button)sender;
-
             
             if (opChecklist.Contains(Convert.ToString(inFixArList[inVar])))
             {
-
+                //this if just makes sure the last element isnt a operand
+                //if it is it does nothing, to prevent back to back operands being entered
             }
             else
             {
+                //format result box to properly space new operand
                 resultBox.Text += " " + button.Text + " ";
 
                 AddToArray(button.Text, 1);
 
+                // flip the decimal flag off, being that the new last element
+                // will be  empty and not contain any decimals
                 decimalExists = false;
             }          
-
         }
 
         private void PostfixConv()
@@ -143,8 +144,7 @@ namespace Simple_Calculator
                 else if (element.Equals("-"))
                 {
                     PriorityStack(element, prio);
-                }
-                
+                }               
             }
             //now combine the stack into array
             for(int i = 0; i<= variables.Count; i++)
@@ -214,9 +214,7 @@ namespace Simple_Calculator
 
                 //add answer to infix array
                 AddToArray(resultBox.Text, 0);
-            }
-                       
-            
+            }                                  
         }
 
         private int PriorityOperators(string n)
@@ -267,8 +265,7 @@ namespace Simple_Calculator
             else
             {
                 inFixArList.Add(newVal);
-            }
-            
+            }           
         }
 
         private void btnClear_Click(object sender, EventArgs e)
