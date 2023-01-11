@@ -90,8 +90,7 @@ namespace Simple_Calculator
 
                     }                    
                 }
-            }               
-                                                                
+            }                                                                               
         }
 
         private void operator_click(object sender, EventArgs e)
