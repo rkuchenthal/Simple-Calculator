@@ -149,10 +149,12 @@ namespace Simple_Calculator
         
         private void btnEquals_Click(object sender, EventArgs e)
         {
-            if(inFixArList.Count == 1)
+            //the user has hit equals without entering a full expression
+            if(inFixArList.Count < 3 || inFixArList[inVar].Equals(""))
             {
-                variables.Push(resultBox.Text);
+                
             }
+            //user has entered a complete expression
             else
             {
                 //convert equation to postfix
@@ -190,24 +192,23 @@ namespace Simple_Calculator
                             break;
                     }
 
-
                 }
+                //the FINAL ANSWER = final pop()
+                // format it to only show 4 decimal places since we are working with small display area
+                string ans = string.Format("{0:0.####}", Convert.ToDouble(variables.Pop().ToString()));
+                //print to result box
+                resultBox.Text = ans;
+
+                //clear all lists so we can continue on with answer if we choose
+                inFixArList.Clear();
+                inVar = 0;
+                postFixArList.Clear();
+                postVar = 0;
+
+                //add answer to infix array
+                AddToArray(resultBox.Text, 0);
             }
-            
-            //the FINAL ANSWER = final pop()
-            // format it to only show 4 decimal places since we are working with small display area
-            string ans = string.Format("{0:0.####}", Convert.ToDouble(variables.Pop().ToString()));
-            //print to result box
-            resultBox.Text = ans; 
-
-            //clear all lists so we can continue on with answer if we choose
-            inFixArList.Clear();
-            inVar = 0;
-            postFixArList.Clear();
-            postVar = 0;
-
-            //add answer to infix array
-            AddToArray(resultBox.Text, 0);
+                       
             
         }
 
