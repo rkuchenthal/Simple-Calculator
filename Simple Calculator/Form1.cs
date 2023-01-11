@@ -267,6 +267,14 @@ namespace Simple_Calculator
             }           
         }
 
+        private void btnUndo_Click(object sender, EventArgs e)
+        {
+            //1.) need to delete last number/operand off of inFixArList
+            //2.) then need to update the resultBox.Text to show new equation
+            //3.) need to account for it they click undo and there is only 1 var or none aka its still at 0
+            //4.) create go back to last equation function
+        }
+
         private void btnClear_Click(object sender, EventArgs e)
         {
             resultBox.Text = "0";
@@ -283,4 +291,6 @@ namespace Simple_Calculator
 
 
 //TODO
-// trim the final answer to 4 decimal points 0.1234
+// add parenthesis
+//add more operands
+// add backspace button
